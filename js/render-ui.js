@@ -24,6 +24,7 @@ export function renderUI({ store, transport, midiManager, audioClick }) {
   const playButton = document.querySelector('#play');
   const stopButton = document.querySelector('#stop');
   const recordButton = document.querySelector('#record');
+  const clearButton = document.querySelector('#clear');
 
   const clickField = document.createElement('label');
   clickField.className = 'field field-sm';
@@ -94,6 +95,10 @@ export function renderUI({ store, transport, midiManager, audioClick }) {
     if (nextRecording) {
       transport.start();
     }
+  });
+
+  clearButton?.addEventListener('click', () => {
+    store.actions.clearNotes();
   });
 
   return {

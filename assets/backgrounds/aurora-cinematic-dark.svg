@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 1440" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#02030a"/>
+      <stop offset="1" stop-color="#0d162a"/>
+    </linearGradient>
+    <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="48"/>
+    </filter>
+  </defs>
+  <rect width="2560" height="1440" fill="url(#bg)"/>
+  <g filter="url(#blur)">
+    <path d="M-200 450C250 280 510 640 960 520s570-390 1120-340 820 450 820 450v640H-200z" fill="#68f5dd" fill-opacity=".22"/>
+    <path d="M-160 280C420 120 760 460 1260 360s700-360 1210-320 770 350 770 350v560H-160z" fill="#75a8ff" fill-opacity=".2"/>
+    <path d="M-120 640C360 520 710 860 1160 760s650-320 1140-260 760 330 760 330v610H-120z" fill="#4cc9c2" fill-opacity=".14"/>
+  </g>
+</svg>
