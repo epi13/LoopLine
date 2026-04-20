@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LoopLine</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="control-bar panel" aria-label="Playback controls">
+        <h1 class="app-title">LoopLine</h1>
+
+        <label class="field">
+          <span class="field-label">MIDI Device</span>
+          <select id="midi-selector" name="midi-selector">
+            <option value="">No device selected</option>
+          </select>
+        </label>
+
+        <label class="field field-sm">
+          <span class="field-label">BPM</span>
+          <input id="bpm" name="bpm" type="number" min="20" max="300" value="120" />
+        </label>
+
+        <label class="field field-sm">
+          <span class="field-label">Beats / Loop</span>
+          <input
+            id="beats-per-loop"
+            name="beats-per-loop"
+            type="number"
+            min="1"
+            max="64"
+            value="16"
+          />
+        </label>
+
+        <div class="field transport" role="group" aria-label="Transport">
+          <span class="field-label">Transport</span>
+          <div class="button-row">
+            <button id="play" type="button">Play</button>
+            <button id="stop" type="button">Stop</button>
+            <button id="record" type="button">Record</button>
+          </div>
+        </div>
+
+        <label class="field field-sm">
+          <span class="field-label">Quantize</span>
+          <select id="quantize" name="quantize">
+            <option value="off">Off</option>
+            <option value="1/4">1/4</option>
+            <option value="1/8" selected>1/8</option>
+            <option value="1/16">1/16</option>
+          </select>
+        </label>
+
+        <label class="field field-sm">
+          <span class="field-label">Loop Mode</span>
+          <select id="loop-mode" name="loop-mode">
+            <option value="replace" selected>Replace</option>
+            <option value="overdub">Overdub</option>
+          </select>
+        </label>
+      </header>
+
+      <main class="content" aria-label="Sequencer workspace">
+        <section class="panel beat-line-panel" aria-labelledby="beat-line-heading">
+          <h2 id="beat-line-heading">Beat Line</h2>
+          <div id="beat-line" class="panel-body" role="presentation"></div>
+        </section>
+
+        <section class="panel notation-panel" aria-labelledby="notation-heading">
+          <h2 id="notation-heading">Notation</h2>
+          <div id="notation" class="panel-body" role="presentation"></div>
+        </section>
+      </main>
+
+      <footer class="status-strip panel" aria-live="polite">
+        <span id="status-text">Ready</span>
+      </footer>
+    </div>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>
