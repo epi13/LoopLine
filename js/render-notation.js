@@ -31,7 +31,7 @@ export function renderNotation({ container, store, transport }) {
     layerGrid.replaceChildren();
 
     for (let line = 0; line < 5; line += 1) {
-      const y = 70 + line * 28;
+      const y = 92 + line * 24;
       const staffLine = document.createElementNS(SVG_NS, 'line');
       staffLine.setAttribute('x1', '28');
       staffLine.setAttribute('x2', '972');
@@ -46,11 +46,45 @@ export function renderNotation({ container, store, transport }) {
       const bar = document.createElementNS(SVG_NS, 'line');
       bar.setAttribute('x1', String(x));
       bar.setAttribute('x2', String(x));
-      bar.setAttribute('y1', '42');
-      bar.setAttribute('y2', '218');
+      bar.setAttribute('y1', '72');
+      bar.setAttribute('y2', '200');
       bar.setAttribute('class', beat % 4 === 0 ? 'bar-line major' : 'bar-line minor');
       layerGrid.appendChild(bar);
+
+      if (beat < beatsPerLoop) {
+        const count = document.createElementNS(SVG_NS, 'text');
+        count.setAttribute('x', String(x + 4));
+        count.setAttribute('y', '58');
+        count.setAttribute('fill', 'rgba(190, 210, 220, 0.74)');
+        count.setAttribute('font-size', '20');
+        count.textContent = String(beat + 1);
+        layerGrid.appendChild(count);
+      }
     }
+
+    const clef = document.createElementNS(SVG_NS, 'text');
+    clef.setAttribute('x', '40');
+    clef.setAttribute('y', '176');
+    clef.setAttribute('fill', 'rgba(66, 232, 217, 0.85)');
+    clef.setAttribute('font-size', '110');
+    clef.textContent = '𝄞';
+    layerGrid.appendChild(clef);
+
+    const timeSig = document.createElementNS(SVG_NS, 'text');
+    timeSig.setAttribute('x', '96');
+    timeSig.setAttribute('y', '124');
+    timeSig.setAttribute('fill', 'rgba(66, 232, 217, 0.85)');
+    timeSig.setAttribute('font-size', '52');
+    timeSig.textContent = '4';
+    layerGrid.appendChild(timeSig);
+
+    const timeSigLower = document.createElementNS(SVG_NS, 'text');
+    timeSigLower.setAttribute('x', '96');
+    timeSigLower.setAttribute('y', '168');
+    timeSigLower.setAttribute('fill', 'rgba(66, 232, 217, 0.85)');
+    timeSigLower.setAttribute('font-size', '52');
+    timeSigLower.textContent = '4';
+    layerGrid.appendChild(timeSigLower);
   }
 
   function renderNotes() {
@@ -68,6 +102,14 @@ export function renderNotation({ container, store, transport }) {
       body.setAttribute('ry', '6');
       body.setAttribute('class', 'note-head');
       layerNotes.appendChild(body);
+
+      const stem = document.createElementNS(SVG_NS, 'line');
+      stem.setAttribute('x1', String(x + 7));
+      stem.setAttribute('x2', String(x + 7));
+      stem.setAttribute('y1', String(y));
+      stem.setAttribute('y2', String(y - 44));
+      stem.setAttribute('class', 'note-stem');
+      layerNotes.appendChild(stem);
     });
   }
 
