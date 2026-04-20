@@ -38,9 +38,19 @@
         <div class="field transport" role="group" aria-label="Transport">
           <span class="field-label">Transport</span>
           <div class="button-row">
-            <button id="play" type="button">Play</button>
-            <button id="stop" type="button">Stop</button>
+            <button id="play" type="button">
+              <span class="icon" aria-hidden="true" style="--icon-src: url('./assets/icons/play.svg')"></span>
+              <span>Play</span>
+            </button>
+            <button id="stop" type="button">
+              <span class="icon" aria-hidden="true" style="--icon-src: url('./assets/icons/stop.svg')"></span>
+              <span>Stop</span>
+            </button>
             <button id="record" type="button">Record</button>
+            <button id="clear" type="button">
+              <span class="icon" aria-hidden="true" style="--icon-src: url('./assets/icons/clear.svg')"></span>
+              <span>Clear</span>
+            </button>
           </div>
         </div>
 
@@ -61,6 +71,21 @@
             <option value="overdub">Overdub</option>
           </select>
         </label>
+
+        <div class="field utility-actions" role="group" aria-label="Utility controls">
+          <span class="field-label">Utility</span>
+          <div class="button-row">
+            <button type="button" aria-label="Menu" title="Menu">
+              <span class="icon" aria-hidden="true" style="--icon-src: url('./assets/icons/menu.svg')"></span>
+            </button>
+            <button type="button" aria-label="Metronome settings" title="Metronome settings">
+              <span class="icon" aria-hidden="true" style="--icon-src: url('./assets/icons/metronome.svg')"></span>
+            </button>
+            <button type="button" aria-label="Settings" title="Settings">
+              <span class="icon" aria-hidden="true" style="--icon-src: url('./assets/icons/settings.svg')"></span>
+            </button>
+          </div>
+        </div>
       </header>
 
       <main class="content" aria-label="Sequencer workspace">
