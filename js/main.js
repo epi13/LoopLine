@@ -1,81 +1,87 @@
-const state = {
-  bpm: 120,
-  beatsPerLoop: 16,
-  quantize: '1/8',
-  loopMode: 'replace',
-  midiDeviceId: null,
-  transport: 'stopped'
-};
+import { createAudioClick } from './audio-click.js';
+import { createMidiManager } from './midi.js';
+import { snapPhaseToGrid } from './quantize.js';
+import { setupBackground } from './render-background.js';
+import { renderBeatline } from './render-beatline.js';
+import { renderNotation } from './render-notation.js';
+import { renderUI } from './render-ui.js';
+import { createStore } from './state.js';
+import { createTransport } from './transport.js';
 
-function initState() {
-  return { ...state };
-}
+async function bootstrap() {
+  const store = createStore();
+  const audioClick = createAudioClick();
+  const transport = createTransport({ getState: store.getState });
+  const midiBridge = { selectInput() {} };
 
-function initTransport(appState) {
-  const statusText = document.querySelector('#status-text');
+  const destroyBackground = setupBackground();
 
-  return {
-    play() {
-      appState.transport = 'playing';
-      statusText.textContent = `Transport: ${appState.transport}`;
+  const beatlineDestroy = renderBeatline({
+    container: document.querySelector('#beat-line'),
+    store,
+    transport,
+    showSubTicks: true
+  });
+
+  const notationDestroy = renderNotation({
+    container: document.querySelector('#notation'),
+    store,
+    transport
+  });
+
+  const ui = renderUI({
+    store,
+    transport,
+    midiManager: midiBridge,
+    audioClick
+  });
+
+  const midiManager = await createMidiManager({
+    onStatus(status) {
+      store.actions.setMidiStatus(status);
     },
-    stop() {
-      appState.transport = 'stopped';
-      statusText.textContent = `Transport: ${appState.transport}`;
+    onInputs(inputs) {
+      ui.updateMidiInputs(inputs);
     },
-    record() {
-      appState.transport = 'recording';
-      statusText.textContent = `Transport: ${appState.transport}`;
+    onNote(event) {
+      if (!store.getState().recording || event.type !== 'noteon') {
+        return;
+      }
+
+      const { phase } = transport.getSnapshot();
+      const state = store.getState();
+      const startPhase = snapPhaseToGrid(phase, state.quantize);
+
+      store.actions.addNote({
+        id: `${event.timestamp}-${event.note}`,
+        pitch: event.note,
+        velocity: event.velocity,
+        startPhase,
+        durationBeats: 0.5
+      });
     }
-  };
-}
-
-function initMidi(appState) {
-  const selector = document.querySelector('#midi-selector');
-
-  selector.addEventListener('change', (event) => {
-    appState.midiDeviceId = event.target.value || null;
-  });
-}
-
-function initRender(appState) {
-  const bpmInput = document.querySelector('#bpm');
-  const beatsInput = document.querySelector('#beats-per-loop');
-  const quantizeSelect = document.querySelector('#quantize');
-  const loopModeSelect = document.querySelector('#loop-mode');
-
-  bpmInput.value = String(appState.bpm);
-  beatsInput.value = String(appState.beatsPerLoop);
-  quantizeSelect.value = appState.quantize;
-  loopModeSelect.value = appState.loopMode;
-
-  bpmInput.addEventListener('change', () => {
-    appState.bpm = Number(bpmInput.value) || appState.bpm;
   });
 
-  beatsInput.addEventListener('change', () => {
-    appState.beatsPerLoop = Number(beatsInput.value) || appState.beatsPerLoop;
+  midiBridge.selectInput = midiManager.selectInput;
+
+  transport.subscribe('beat', ({ beatIndex }) => {
+    const state = store.getState();
+    if (!state.running) {
+      return;
+    }
+
+    const enabled = state.clickEnabled && state.beatToggles[beatIndex];
+    audioClick.trigger({ enabled, accent: beatIndex === 0 });
   });
 
-  quantizeSelect.addEventListener('change', () => {
-    appState.quantize = quantizeSelect.value;
+  window.addEventListener('beforeunload', () => {
+    midiManager.destroy();
+    transport.stop({ reset: true });
+    beatlineDestroy();
+    notationDestroy();
+    ui.destroy();
+    destroyBackground();
   });
-
-  loopModeSelect.addEventListener('change', () => {
-    appState.loopMode = loopModeSelect.value;
-  });
-}
-
-function bootstrap() {
-  const appState = initState();
-  const transport = initTransport(appState);
-
-  initMidi(appState);
-  initRender(appState);
-
-  document.querySelector('#play').addEventListener('click', transport.play);
-  document.querySelector('#stop').addEventListener('click', transport.stop);
-  document.querySelector('#record').addEventListener('click', transport.record);
 }
 
 bootstrap();

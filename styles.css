@@ -163,3 +163,61 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+
+.beatline-svg,
+.notation-svg {
+  width: 100%;
+  height: 16rem;
+  display: block;
+}
+
+.beat-lane,
+.staff-line,
+.bar-line {
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+.bar-line.major,
+.beat-tick.major {
+  stroke: var(--line-strong);
+}
+
+.beat-tick.minor,
+.bar-line.minor {
+  stroke-width: 1;
+  opacity: 0.45;
+}
+
+.beat-node {
+  fill: rgba(117, 168, 255, 0.2);
+  stroke: var(--line-strong);
+  stroke-width: 2;
+  cursor: pointer;
+  transition: transform 120ms ease, fill 120ms ease;
+}
+
+.beat-node.off {
+  fill: rgba(143, 166, 255, 0.05);
+  stroke: var(--line);
+}
+
+.beat-node.active {
+  transform: scale(1.2);
+  fill: rgba(97, 243, 218, 0.42);
+}
+
+.notation-playhead {
+  stroke: var(--accent-2);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.note-head {
+  fill: var(--accent);
+}
+
+#click-enabled {
+  width: 1.1rem;
+  height: 1.1rem;
+}
