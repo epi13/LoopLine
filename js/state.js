@@ -1,15 +1,28 @@
 const DEFAULTS = {
-  bpm: 120,
-  beatsPerLoop: 16,
+  bpm: 96,
+  beatsPerLoop: 4,
   quantize: '1/8',
   loopMode: 'replace',
   selectedMidiInputId: null,
   running: false,
   recording: false,
   clickEnabled: true,
-  beatToggles: Array.from({ length: 16 }, () => true),
-  notes: [],
-  midiStatus: 'MIDI unavailable'
+  beatToggles: Array.from({ length: 4 }, () => true),
+  notes: [
+    { id: 'seed-1', pitch: 64, velocity: 0.78, startPhase: 0.02, durationBeats: 0.5 },
+    { id: 'seed-2', pitch: 62, velocity: 0.71, startPhase: 0.12, durationBeats: 0.5 },
+    { id: 'seed-3', pitch: 65, velocity: 0.74, startPhase: 0.2, durationBeats: 0.5 },
+    { id: 'seed-4', pitch: 62, velocity: 0.72, startPhase: 0.28, durationBeats: 0.5 },
+    { id: 'seed-5', pitch: 63, velocity: 0.7, startPhase: 0.4, durationBeats: 0.5 },
+    { id: 'seed-6', pitch: 65, velocity: 0.72, startPhase: 0.46, durationBeats: 0.5 },
+    { id: 'seed-7', pitch: 66, velocity: 0.74, startPhase: 0.54, durationBeats: 0.5 },
+    { id: 'seed-8', pitch: 67, velocity: 0.75, startPhase: 0.6, durationBeats: 0.5 },
+    { id: 'seed-9', pitch: 63, velocity: 0.7, startPhase: 0.68, durationBeats: 0.5 },
+    { id: 'seed-10', pitch: 64, velocity: 0.72, startPhase: 0.76, durationBeats: 0.5 },
+    { id: 'seed-11', pitch: 62, velocity: 0.7, startPhase: 0.84, durationBeats: 0.5 },
+    { id: 'seed-12', pitch: 65, velocity: 0.74, startPhase: 0.92, durationBeats: 0.5 }
+  ],
+  midiStatus: 'MIDI ready'
 };
 
 function normalizeBeatToggles(beatsPerLoop, toggles = []) {

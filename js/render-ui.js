@@ -26,24 +26,19 @@ export function renderUI({ store, transport, midiManager, audioClick }) {
   const recordButton = document.querySelector('#record');
   const clearButton = document.querySelector('#clear');
 
-  const clickField = document.createElement('label');
-  clickField.className = 'field field-sm';
-  clickField.innerHTML = `
-    <span class="field-label">Click</span>
-    <input id="click-enabled" name="click-enabled" type="checkbox" checked aria-label="Enable metronome click" />
-  `;
-  loopModeSelect.closest('.field')?.insertAdjacentElement('afterend', clickField);
-  const clickCheckbox = clickField.querySelector('#click-enabled');
+  const clickCheckbox = document.querySelector('#click-enabled');
 
   const unsubscribe = store.subscribe((state) => {
     bpmInput.value = String(state.bpm);
     beatsInput.value = String(state.beatsPerLoop);
     quantizeSelect.value = state.quantize;
     loopModeSelect.value = state.loopMode;
-    clickCheckbox.checked = state.clickEnabled;
+    if (clickCheckbox) {
+      clickCheckbox.checked = state.clickEnabled;
+    }
 
     const transportLabel = state.recording ? 'recording' : state.running ? 'playing' : 'stopped';
-    statusText.textContent = `${state.midiStatus} • Transport: ${transportLabel}`;
+    statusText.textContent = transportLabel.toUpperCase();
 
     playButton.setAttribute('aria-pressed', String(state.running && !state.recording));
     recordButton.setAttribute('aria-pressed', String(state.recording));
@@ -65,7 +60,7 @@ export function renderUI({ store, transport, midiManager, audioClick }) {
     store.actions.setLoopMode(loopModeSelect.value);
   });
 
-  clickCheckbox.addEventListener('change', () => {
+  clickCheckbox?.addEventListener('change', () => {
     store.actions.setClickEnabled(clickCheckbox.checked);
   });
 
