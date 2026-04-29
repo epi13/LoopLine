@@ -27,7 +27,7 @@ function shouldIgnoreKeyboardShortcut(event) {
   return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target.tagName);
 }
 
-export function renderUI({ store, transport, midiManager, audioClick }) {
+export function renderUI({ store, transport, midiManager, audioClick, midiOut }) {
   const midiSelector = document.querySelector('#midi-selector');
   const bpmInput = document.querySelector('#bpm');
   const beatsInput = document.querySelector('#beats-per-loop');
@@ -86,6 +86,7 @@ export function renderUI({ store, transport, midiManager, audioClick }) {
 
   playButton.addEventListener('click', () => {
     audioClick.unlock();
+    midiOut?.ensureRunning();
     store.actions.setRecording(false);
     store.actions.setRunning(true);
     transport.start();
@@ -99,6 +100,7 @@ export function renderUI({ store, transport, midiManager, audioClick }) {
 
   recordButton.addEventListener('click', () => {
     audioClick.unlock();
+    midiOut?.ensureRunning();
     const nextRecording = !store.getState().recording;
     store.actions.setRecording(nextRecording);
     if (nextRecording) {
@@ -118,6 +120,7 @@ export function renderUI({ store, transport, midiManager, audioClick }) {
     if (event.code === 'Space') {
       event.preventDefault();
       audioClick.unlock();
+      midiOut?.ensureRunning();
       const state = store.getState();
       const nextRunning = !state.running;
       store.actions.setRecording(false);
@@ -133,6 +136,7 @@ export function renderUI({ store, transport, midiManager, audioClick }) {
     if (event.code === 'KeyR') {
       event.preventDefault();
       audioClick.unlock();
+      midiOut?.ensureRunning();
       const nextRecording = !store.getState().recording;
       store.actions.setRecording(nextRecording);
       if (nextRecording) {

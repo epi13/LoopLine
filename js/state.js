@@ -22,7 +22,8 @@ const DEFAULTS = {
     { id: 'seed-11', pitch: 62, velocity: 0.7, startPhase: 0.84, durationBeats: 0.5 },
     { id: 'seed-12', pitch: 65, velocity: 0.74, startPhase: 0.92, durationBeats: 0.5 }
   ],
-  midiStatus: 'MIDI ready'
+  midiStatus: 'MIDI ready',
+  activeNotes: []
 };
 
 function normalizeBeatToggles(beatsPerLoop, toggles = []) {
@@ -134,6 +135,10 @@ export function createStore(initialState = {}) {
       },
       setClickEnabled(clickEnabled) {
         setState({ clickEnabled: Boolean(clickEnabled) });
+      },
+      setActiveNotes(activeNotes) {
+        const normalized = Array.from(activeNotes || []).map((note) => Number(note)).filter((note) => Number.isFinite(note));
+        setState({ activeNotes: normalized });
       }
     };
   }
