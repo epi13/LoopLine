@@ -34,21 +34,22 @@ export function renderBeatline({ container, store, transport, showSubTicks = tru
     svg.appendChild(lane);
 
     if (showSubTicks) {
-      const subTicks = beats * 4;
+      const subdivisionsPerBeat = 4;
+      const subTicks = beats * subdivisionsPerBeat;
       for (let i = 0; i <= subTicks; i += 1) {
         const x = padX + (i / subTicks) * width;
         const tick = document.createElementNS(SVG_NS, 'line');
         tick.setAttribute('x1', String(x));
         tick.setAttribute('x2', String(x));
-        tick.setAttribute('y1', i % 4 === 0 ? '96' : '142');
+        tick.setAttribute('y1', i % subdivisionsPerBeat === 0 ? '96' : '142');
         tick.setAttribute('y2', '156');
-        tick.setAttribute('class', i % 4 === 0 ? 'beat-tick major' : 'beat-tick minor');
+        tick.setAttribute('class', i % subdivisionsPerBeat === 0 ? 'beat-tick major' : 'beat-tick minor');
         svg.appendChild(tick);
       }
     }
 
     for (let beat = 0; beat < beats; beat += 1) {
-      const x = padX + (beat / Math.max(1, beats - 1)) * width;
+      const x = padX + (beat / beats) * width;
       const label = document.createElementNS(SVG_NS, 'text');
       label.setAttribute('x', String(x));
       label.setAttribute('y', '84');

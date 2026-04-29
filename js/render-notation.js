@@ -7,6 +7,10 @@ function midiToStaffY(note) {
 }
 
 export function renderNotation({ container, store, transport }) {
+  const gridStartX = 28;
+  const gridWidth = 944;
+  const notationStartX = 132;
+  const notationWidth = 840;
   const svg = document.createElementNS(SVG_NS, 'svg');
   svg.classList.add('notation-svg');
   svg.setAttribute('viewBox', '0 0 1000 260');
@@ -34,7 +38,7 @@ export function renderNotation({ container, store, transport }) {
       const y = 92 + line * 24;
       const staffLine = document.createElementNS(SVG_NS, 'line');
       staffLine.setAttribute('x1', '28');
-      staffLine.setAttribute('x2', '972');
+      staffLine.setAttribute('x2', String(gridStartX + gridWidth));
       staffLine.setAttribute('y1', String(y));
       staffLine.setAttribute('y2', String(y));
       staffLine.setAttribute('class', 'staff-line');
@@ -42,7 +46,7 @@ export function renderNotation({ container, store, transport }) {
     }
 
     for (let beat = 0; beat <= beatsPerLoop; beat += 1) {
-      const x = 28 + (beat / beatsPerLoop) * 944;
+      const x = gridStartX + (beat / beatsPerLoop) * gridWidth;
       const bar = document.createElementNS(SVG_NS, 'line');
       bar.setAttribute('x1', String(x));
       bar.setAttribute('x2', String(x));
@@ -92,7 +96,7 @@ export function renderNotation({ container, store, transport }) {
     layerNotes.replaceChildren();
 
     notes.forEach((note) => {
-      const x = 28 + note.startPhase * 944;
+      const x = notationStartX + note.startPhase * notationWidth;
       const y = midiToStaffY(note.pitch);
 
       const body = document.createElementNS(SVG_NS, 'ellipse');
@@ -114,7 +118,7 @@ export function renderNotation({ container, store, transport }) {
   }
 
   function renderPlayhead(phase) {
-    const x = 28 + phase * 944;
+    const x = notationStartX + phase * notationWidth;
     playhead.setAttribute('x1', String(x));
     playhead.setAttribute('x2', String(x));
   }
