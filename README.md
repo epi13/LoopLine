@@ -60,6 +60,11 @@ The control bar centralizes loop-wide settings and transport controls.
   - **Stop**: halts playback and resets or parks playhead per mode policy.
   - Optional **Clear** action removes loop note events while preserving global settings.
 
+- **Keyboard shortcuts**
+  - `Space`: toggle play/stop.
+  - `R`: toggle recording mode.
+  - `Delete` / `Backspace`: clear loop notes.
+
 ## Beat line behavior
 
 The beat line is the rhythmic reference strip synchronized to transport.
